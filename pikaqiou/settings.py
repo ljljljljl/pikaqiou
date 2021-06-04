@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = 'django-insecure-v0x%zkl)7j_8$^x(h@&s^o+$bckg)+xk1kazb5#aofzg#0dnd@
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -69,21 +67,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'pikaqiou.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',   # 数据库引擎
+        'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
         'NAME': 'piblog',  # 数据库名，先前创建的
-        'USER': 'lj',     # 用户名，可以自己创建用户
+        'USER': 'lj',  # 用户名，可以自己创建用户
         'PASSWORD': '123456',  # 密码
         'HOST': '127.0.0.1',  # mysql服务所在的主机ip
-        'PORT': '3306',         # mysql服务端口
+        'PORT': '3306',  # mysql服务端口
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -103,7 +99,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -117,7 +112,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
@@ -127,3 +121,28 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# redis的配置
+# 设置django中CACHE默认的保存位置
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        # 设置为redis所在, 以及所用库序列
+        "LOCATION": "redis://127.0.0.1:6379/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    "session": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        # 设置为redis所在, 以及所用库序列
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+
+        }
+    },
+}
+# 设置session保存在cache中
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "session"
